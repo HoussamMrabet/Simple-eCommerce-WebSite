@@ -1,6 +1,7 @@
 <?php 
 
-    include "includes/templates/header.inc";
+    include 'init.php';
+    include $template."header.inc";
 
 ?>
 
@@ -12,6 +13,6 @@
 
 <?php 
 
-    include "includes/templates/footer.inc";
+    include $template."footer.inc";
 
 ?>
