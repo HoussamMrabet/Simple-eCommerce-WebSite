@@ -13,4 +13,6 @@
     $fonts = 'layout/fonts/';
     $pic = 'layout/pictures/';
 
+    include $template."header.inc";
+    include $template."navbar.php";
 ?>
