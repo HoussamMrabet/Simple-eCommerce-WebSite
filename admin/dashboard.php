@@ -1,5 +1,4 @@
 <?php 
-    include 'session.php';
     include 'init.php';
     include $template."header.inc";
 
@@ -15,7 +14,7 @@
 
     <!-- Header End -->
 
-    <?php include 'login.php'; ?>
+    <p>welcome to the Dashboard page</p>
     
 
 
