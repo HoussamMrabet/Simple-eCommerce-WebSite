@@ -1,3 +1,0 @@
-<!-- Header Begin -->
-
-<!-- Header End -->
