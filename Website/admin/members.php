@@ -334,7 +334,7 @@
 
 				<h1 class="text-center">Edit Member</h1>
 				<div class="container">
-					<form class="form-horizontal" action="?do=Update" method="POST">
+					<form class="form-horizontal" action="?do=Update" method="POST" enctype="multipart/form-data">
 						<input type="hidden" name="userid" value="<?php echo $userid ?>" />
 						<!-- Start Username Field -->
 						<div class="form-group form-group-lg">
