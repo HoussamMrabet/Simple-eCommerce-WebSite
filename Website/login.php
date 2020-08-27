@@ -194,7 +194,7 @@
 	</form>
 	<!-- End Login Form -->
 	<!-- Start Signup Form -->
-	<form class="signup" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+	<form class="signup" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST"  enctype="multipart/form-data">
 		<div class="input-container">
 			<input 
 				pattern=".{4,}"
