@@ -91,6 +91,11 @@ h1 {
 
 /* Start Header */
 
+.upper-bar {
+	padding: 10px;
+	background-color: #FFF
+}
+
 .my-image {
 	width: 36px;
 	height: 36px;
