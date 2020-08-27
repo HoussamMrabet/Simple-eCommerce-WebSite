@@ -187,8 +187,9 @@
 				$avatarAllowedExtension = array("jpeg", "jpg", "png", "gif");
 
 				// Get Avatar Extension
-
-				$avatarExtension = strtolower(end(explode('.', $avatarName)));
+				
+				$ref = explode('.', $avatarName);
+				$avatarExtension = strtolower(end($ref));
 
 				// Get Variables From The Form
 
