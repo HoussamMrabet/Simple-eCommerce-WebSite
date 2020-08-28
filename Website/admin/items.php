@@ -53,21 +53,27 @@
 			<h1 class="text-center">Manage Items</h1>
 			<div class="container">
 				<div class="table-responsive">
-					<table class="main-table text-center table table-bordered">
+					<table class="main-table manage-members text-center table table-bordered">
 						<tr>
-							<td>#ID</td>
+							<td>Picture</td>
 							<td>Item Name</td>
 							<td>Description</td>
 							<td>Price</td>
 							<td>Adding Date</td>
 							<td>Category</td>
-							<td>Username</td>
-							<td>Control</td>
+							<td>Owner</td>
+							<td>Action</td>
 						</tr>
 						<?php
 							foreach($items as $item) {
 								echo "<tr>";
-									echo "<td>" . $item['Item_ID'] . "</td>";
+									echo "<td>";
+									if (empty($item['picture'])) {
+										echo "<img src='uploads/default.png' alt='' />";
+									} else {
+										echo "<img src='uploads/items/" . $item['picture'] . "' alt='' />";
+									}
+									echo "</td>";
 									echo "<td>" . $item['Name'] . "</td>";
 									echo "<td>" . $item['Description'] . "</td>";
 									echo "<td>" . $item['Price'] . "</td>";
@@ -112,7 +118,7 @@
 
 			<h1 class="text-center">Add New Item</h1>
 			<div class="container">
-				<form class="form-horizontal" action="?do=Insert" method="POST">
+				<form class="form-horizontal" action="?do=Insert" method="POST" enctype="multipart/form-data">
 					<!-- Start Name Field -->
 					<div class="form-group form-group-lg">
 						<label class="col-sm-2 control-label">Name</label>
@@ -217,13 +223,12 @@
 					<!-- End Categories Field -->
 					<!-- Start Tags Field -->
 					<div class="form-group form-group-lg">
-						<label class="col-sm-2 control-label">Tags</label>
+						<label class="col-sm-2 control-label">Picture</label>
 						<div class="col-sm-10 col-md-6">
 							<input 
-								type="text" 
-								name="tags" 
-								class="form-control" 
-								placeholder="Separate Tags With Comma (,)" />
+								type="file" 
+								name="picture" 
+								class="form-control"  />
 						</div>
 					</div>
 					<!-- End Tags Field -->
@@ -246,6 +251,22 @@
 				echo "<h1 class='text-center'>Insert Item</h1>";
 				echo "<div class='container'>";
 
+				// Upload Variables
+
+				$avatarName = $_FILES['picture']['name'];
+				$avatarSize = $_FILES['picture']['size'];
+				$avatarTmp	= $_FILES['picture']['tmp_name'];
+				$avatarType = $_FILES['picture']['type'];
+
+				// List Of Allowed File Typed To Upload
+
+				$avatarAllowedExtension = array("jpeg", "jpg", "png", "gif");
+
+				// Get Avatar Extension
+				
+				$ref = explode('.', $avatarName);
+				$avatarExtension = strtolower(end($ref));
+
 				// Get Variables From The Form
 
 				$name		= $_POST['name'];
@@ -255,7 +276,6 @@
 				$status 	= $_POST['status'];
 				$member 	= $_POST['member'];
 				$cat 		= $_POST['category'];
-				$tags 		= $_POST['tags'];
 
 				// Validate The Form
 
@@ -289,6 +309,18 @@
 					$formErrors[] = 'You Must Choose the <strong>Category</strong>';
 				}
 
+				if (! empty($avatarName) && ! in_array($avatarExtension, $avatarAllowedExtension)) {
+					$formErrors[] = 'This Extension Is Not <strong>Allowed</strong>';
+				}
+
+				if (empty($avatarName)) {
+					$formErrors[] = 'Item Picture Is <strong>Required</strong>';
+				}
+
+				if ($avatarSize > 4194304) {
+					$formErrors[] = 'Avatar Cant Be Larger Than <strong>4MB</strong>';
+				}
+
 				// Loop Into Errors Array And Echo It
 
 				foreach($formErrors as $error) {
@@ -299,13 +331,17 @@
 
 				if (empty($formErrors)) {
 
+					$avatar = rand(0, 10000000000) . '_' . $avatarName;
+
+					move_uploaded_file($avatarTmp, "uploads\items\\" . $avatar);
+
 					// Insert Userinfo In Database
 
 					$stmt = $con->prepare("INSERT INTO 
 
-						items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID, tags)
+						items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID, picture)
 
-						VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :ztags)");
+						VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :zpicture)");
 
 					$stmt->execute(array(
 
@@ -316,7 +352,7 @@
 						'zstatus' 	=> $status,
 						'zcat'		=> $cat,
 						'zmember'	=> $member,
-						'ztags'		=> $tags
+						'zpicture'		=> $avatar
 
 					));
 
