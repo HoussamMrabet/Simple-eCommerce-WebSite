@@ -31,7 +31,7 @@
 			$country 	= filter_var($_POST['country'], FILTER_SANITIZE_STRING);
 			$status 	= filter_var($_POST['status'], FILTER_SANITIZE_NUMBER_INT);
 			$category 	= filter_var($_POST['category'], FILTER_SANITIZE_NUMBER_INT);
-			$tags 		= filter_var($_POST['tags'], FILTER_SANITIZE_STRING);
+			$contact 	= filter_var($_POST['contact'], FILTER_SANITIZE_STRING);
 
 			if (strlen($name) < 4) {
 
@@ -69,6 +69,12 @@
 
 			}
 
+			if (empty($contact)) {
+
+				$formErrors[] = 'Item Contact Cant Be Empty';
+
+			}
+
 			if (! empty($avatarName) && ! in_array($avatarExtension, $avatarAllowedExtension)) {
 				$formErrors[] = 'This Extension Is Not <strong>Allowed</strong>';
 			}
@@ -87,15 +93,15 @@
 
 				$avatar = rand(0, 10000000000) . '_' . $avatarName;
 
-				move_uploaded_file($avatarTmp, "uploads\items\\" . $avatar);
+				move_uploaded_file($avatarTmp, "admin\uploads\items\\" . $avatar);
 
 				// Insert Userinfo In Database
 
 				$stmt = $con->prepare("INSERT INTO 
 
-					items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID, picture)
+					items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID, picture, contact)
 
-					VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :zpicture)");
+					VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :zpicture, :zcontact)");
 
 				$stmt->execute(array(
 
@@ -106,7 +112,8 @@
 					'zstatus' 	=> $status,
 					'zcat'		=> $category,
 					'zmember'	=> $_SESSION['uid'],
-					'zpicture'		=> $avatar
+					'zpicture'	=> $avatar,
+					'zcontact'	=> $contact
 
 				));
 
@@ -160,6 +167,19 @@
 										class="form-control live"   
 										placeholder="Description of The Item" 
 										data-class=".live-desc"
+										required />
+								</div>
+							</div>
+							<!-- End Description Field -->
+							<!-- Start Description Field -->
+							<div class="form-group form-group-lg">
+								<label class="col-sm-3 control-label">Contact</label>
+								<div class="col-sm-10 col-md-9">
+									<input 
+										type="text" 
+										name="contact" 
+										class="form-control"   
+										placeholder="Phone Number of the Item owner" 
 										required />
 								</div>
 							</div>
@@ -246,7 +266,7 @@
 					<div class="col-md-4">
 						<div class="thumbnail item-box live-preview">
 							<span class="price-tag">
-								<span class="live-price">0</span>
+								<span class="live-price">$ 0</span>
 							</span>
 							<img id="output" class="img-responsive" alt="" />
 							<div class="caption">
