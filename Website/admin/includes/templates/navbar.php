@@ -13,7 +13,7 @@
         <li><a href="categories.php"><?php echo lang('CATEGORIES') ?></a></li>
         <li><a href="items.php"><?php echo lang('ITEMS') ?></a></li>
         <li><a href="members.php"><?php echo lang('MEMBERS') ?></a></li>
-        <li><a href="comments.php"><?php echo lang('COMMENTS') ?></a></li>
+        <li><a href="comments.php"><?php echo lang('FEEDBACKS') ?></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
