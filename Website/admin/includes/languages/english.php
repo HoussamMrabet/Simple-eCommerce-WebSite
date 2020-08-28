@@ -10,7 +10,7 @@
 			'CATEGORIES' 	=> 'Categories',
 			'ITEMS' 		=> 'Items',
 			'MEMBERS' 		=> 'Members',
-			'COMMENTS'		=> 'Comments',
+			'FEEDBACKS'		=> 'Feedbacks',
 			'STATISTICS' 	=> 'Statistics',
 			'LOGS' 			=> 'Logs',
 			'' => '',
