@@ -4,7 +4,7 @@
 	$pageTitle = 'Homepage';
 	include 'init.php';
 ?>
-<div class="container">
+<div style="padding-top:50px;" class="container">
 	<div class="row">
 		<?php
 			$allItems = getAllFrom('*', 'items', 'where Approve = 1', '', 'Item_ID');
