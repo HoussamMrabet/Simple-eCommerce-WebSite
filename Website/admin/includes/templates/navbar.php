@@ -21,7 +21,6 @@
           <ul class="dropdown-menu">
             <li><a href="../index.php">Visit Shop</a></li>
             <li><a href="members.php?do=Edit&userid=<?php echo $_SESSION['ID'] ?>">Edit Profile</a></li>
-            <li><a href="#">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>
           </ul>
         </li>
