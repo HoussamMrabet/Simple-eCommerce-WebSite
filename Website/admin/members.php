@@ -284,8 +284,14 @@
 						// Echo Success Message
 
 						$theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Inserted</div>';
+					
+						$seconds = 3;
 
-						redirectHome($theMsg, 'back');
+						echo $theMsg;
+
+						echo "<div class='alert alert-info'>You Will Be Redirected After $seconds Seconds.</div>";
+			
+						header("refresh:$seconds;url='members.php'");
 
 					}
 
@@ -478,8 +484,13 @@
 
 						$theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
 
-						redirectHome($theMsg, 'back');
+						$seconds = 3;
 
+						echo $theMsg;
+
+						echo "<div class='alert alert-info'>You Will Be Redirected After $seconds Seconds.</div>";
+			
+						header("refresh:$seconds;url='members.php'");
 					}
 
 				}
