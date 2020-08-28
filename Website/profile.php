@@ -33,7 +33,7 @@
 						<span>Registered Date</span> : <?php echo $info['Date'] ?>
 					</li>
 				</ul>
-				<a href="#" class="btn btn-default">Edit Information</a>
+				<a href="editProfil.php" class="btn btn-default">Edit Informations</a>
 			</div>
 		</div>
 	</div>
