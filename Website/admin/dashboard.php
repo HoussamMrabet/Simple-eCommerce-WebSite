@@ -54,7 +54,7 @@
 						<div class="stat st-comments">
 							<i class="fa fa-comments"></i>
 							<div class="info">
-								Total Comments
+								Total Feedbacks
 								<span>
 									<a href="comments.php"><?php echo countItems('c_id', 'comments') ?></a>
 								</span>
@@ -148,7 +148,7 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<i class="fa fa-comments-o"></i> 
-								Latest <?php echo $numComments ?> Comments 
+								Latest <?php echo $numComments ?> Feedbacks 
 								<span class="toggle-info pull-right">
 									<i class="fa fa-plus fa-lg"></i>
 								</span>
