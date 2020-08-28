@@ -52,13 +52,13 @@
 
 			?>
 
-			<h1 class="text-center">Manage Comments</h1>
+			<h1 class="text-center">Manage Feedbacks</h1>
 			<div class="container">
 				<div class="table-responsive">
 					<table class="main-table text-center table table-bordered">
 						<tr>
 							<td>ID</td>
-							<td>Comment</td>
+							<td>Feedback</td>
 							<td>Item Name</td>
 							<td>User Name</td>
 							<td>Added Date</td>
