@@ -57,7 +57,6 @@
 						<tr>
 							<td>Picture</td>
 							<td>Item Name</td>
-							<td>Description</td>
 							<td>Price</td>
 							<td>Adding Date</td>
 							<td>Category</td>
@@ -75,7 +74,6 @@
 									}
 									echo "</td>";
 									echo "<td>" . $item['Name'] . "</td>";
-									echo "<td>" . $item['Description'] . "</td>";
 									echo "<td>" . $item['Price'] . "</td>";
 									echo "<td>" . $item['Add_Date'] ."</td>";
 									echo "<td>" . $item['category_name'] ."</td>";
@@ -145,6 +143,19 @@
 						</div>
 					</div>
 					<!-- End Description Field -->
+					<!-- Start Price Field -->
+					<div class="form-group form-group-lg">
+						<label class="col-sm-2 control-label">Contact</label>
+						<div class="col-sm-10 col-md-6">
+							<input 
+								type="text" 
+								name="contact" 
+								class="form-control" 
+								required="required" 
+								placeholder="Phone Number of the Item owner" />
+						</div>
+					</div>
+					<!-- End Price Field -->
 					<!-- Start Price Field -->
 					<div class="form-group form-group-lg">
 						<label class="col-sm-2 control-label">Price</label>
@@ -276,6 +287,7 @@
 				$status 	= $_POST['status'];
 				$member 	= $_POST['member'];
 				$cat 		= $_POST['category'];
+				$contact	= $_POST['contact'];
 
 				// Validate The Form
 
@@ -287,6 +299,10 @@
 
 				if (empty($desc)) {
 					$formErrors[] = 'Description Can\'t be <strong>Empty</strong>';
+				}
+
+				if (empty($contact)) {
+					$formErrors[] = 'Contact Can\'t be <strong>Empty</strong>';
 				}
 
 				if (empty($price)) {
@@ -339,9 +355,9 @@
 
 					$stmt = $con->prepare("INSERT INTO 
 
-						items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID, picture)
+						items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID, picture, contact)
 
-						VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :zpicture)");
+						VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :zpicture, :zcontact)");
 
 					$stmt->execute(array(
 
@@ -352,7 +368,8 @@
 						'zstatus' 	=> $status,
 						'zcat'		=> $cat,
 						'zmember'	=> $member,
-						'zpicture'		=> $avatar
+						'zpicture'	=> $avatar,
+						'zcontact'	=> $contact
 
 					));
 
@@ -436,6 +453,20 @@
 							</div>
 						</div>
 						<!-- End Description Field -->
+						<!-- Start Contact Field -->
+						<div class="form-group form-group-lg">
+							<label class="col-sm-2 control-label">Contact</label>
+							<div class="col-sm-10 col-md-6">
+								<input 
+									type="text" 
+									name="contact" 
+									class="form-control" 
+									required="required" 
+									placeholder="Phone Number of the Item owner"
+									value="<?php echo $item['contact'] ?>" />
+							</div>
+						</div>
+						<!-- End Contact Field -->
 						<!-- Start Price Field -->
 						<div class="form-group form-group-lg">
 							<label class="col-sm-2 control-label">Price</label>
@@ -517,19 +548,6 @@
 							</div>
 						</div>
 						<!-- End Categories Field -->
-						<!-- Start Tags Field -->
-						<div class="form-group form-group-lg">
-							<label class="col-sm-2 control-label">Tags</label>
-							<div class="col-sm-10 col-md-6">
-								<input 
-									type="text" 
-									name="tags" 
-									class="form-control" 
-									placeholder="Separate Tags With Comma (,)" 
-									value="<?php echo $item['tags'] ?>" />
-							</div>
-						</div>
-						<!-- End Tags Field -->
 						<!-- Start Submit Field -->
 						<div class="form-group form-group-lg">
 							<div class="col-sm-offset-2 col-sm-10">
@@ -631,7 +649,7 @@
 				$status 	= $_POST['status'];
 				$cat 		= $_POST['category'];
 				$member 	= $_POST['member'];
-				$tags 		= $_POST['tags'];
+				$contact 	= $_POST['contact'];
 
 				// Validate The Form
 
@@ -643,6 +661,10 @@
 
 				if (empty($desc)) {
 					$formErrors[] = 'Description Can\'t be <strong>Empty</strong>';
+				}
+
+				if (empty($contact)) {
+					$formErrors[] = 'Contact Can\'t be <strong>Empty</strong>';
 				}
 
 				if (empty($price)) {
@@ -687,11 +709,11 @@
 												Status = ?,
 												Cat_ID = ?,
 												Member_ID = ?,
-												tags = ?
+												contact = ?
 											WHERE 
 												Item_ID = ?");
 
-					$stmt->execute(array($name, $desc, $price, $country, $status, $cat, $member, $tags, $id));
+					$stmt->execute(array($name, $desc, $price, $country, $status, $cat, $member, $contact, $id));
 
 					// Echo Success Message
 
