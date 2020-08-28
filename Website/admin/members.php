@@ -64,7 +64,7 @@
 								echo "<tr>";
 									echo "<td>";
 									if (empty($row['avatar'])) {
-										echo 'No Image';
+										echo "<img src='uploads/default.png' alt='' />";
 									} else {
 										echo "<img src='uploads/avatars/" . $row['avatar'] . "' alt='' />";
 									}
