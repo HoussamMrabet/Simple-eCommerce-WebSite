@@ -13,7 +13,8 @@
 	<div class="upper-bar">
 		<div class="container">
 			<?php 
-				if (isset($_SESSION['user'])) { ?>
+				if (isset($_SESSION['user'])) { 
+			?>
 
 				<img class="my-image img-circle" src="admin/uploads/avatars/<?php echo $sessionAvatar ?>" alt="" />
 				<div class="btn-group my-info">
@@ -24,7 +25,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="profile.php">My Profile</a></li>
 						<li><a href="newad.php">New Item</a></li>
-						<li><a href="profile.php#my-ads">My Items</a></li>
+						<li><a href="myItems.php">My Items</a></li>
 						<li><a href="logout.php">Logout</a></li>
 					</ul>
 				</div>
