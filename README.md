@@ -1,4 +1,4 @@
-# Simple-eCommerce-WebSite
+# Simple-eCommerce-WebSite (PFE)
 Create a simple responsive eCommerce Web Site.
 
   - Backend: PHP MySQL (PDO).
