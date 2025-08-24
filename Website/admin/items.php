@@ -1,27 +1,27 @@
 <?php
 
-	/*
+/*
 	================================================
 	== Items Page
 	================================================
 	*/
 
-	ob_start(); // Output Buffering Start
+ob_start(); // Output Buffering Start
 
-	session_start();
+session_start();
 
-	$pageTitle = 'Items';
+$pageTitle = 'Items';
 
-	if (isset($_SESSION['Username'])) {
+if (isset($_SESSION['Username'])) {
 
-		include 'init.php';
+	include 'init.php';
 
-		$do = isset($_GET['do']) ? $_GET['do'] : 'Manage';
+	$do = isset($_GET['do']) ? $_GET['do'] : 'Manage';
 
-		if ($do == 'Manage') {
+	if ($do == 'Manage') {
 
 
-			$stmt = $con->prepare("SELECT 
+		$stmt = $con->prepare("SELECT 
 										items.*, 
 										categories.Name AS category_name, 
 										users.Username 
@@ -38,17 +38,17 @@
 									ORDER BY 
 										Item_ID DESC");
 
-			// Execute The Statement
+		// Execute The Statement
 
-			$stmt->execute();
+		$stmt->execute();
 
-			// Assign To Variable 
+		// Assign To Variable 
 
-			$items = $stmt->fetchAll();
+		$items = $stmt->fetchAll();
 
-			if (! empty($items)) {
+		if (! empty($items)) {
 
-			?>
+?>
 
 			<h1 class="text-center">Manage Items</h1>
 			<div class="container">
@@ -64,32 +64,32 @@
 							<td>Action</td>
 						</tr>
 						<?php
-							foreach($items as $item) {
-								echo "<tr>";
-									echo "<td>";
-									if (empty($item['picture'])) {
-										echo "<img src='uploads/default.png' alt='' />";
-									} else {
-										echo "<img src='uploads/items/" . $item['picture'] . "' alt='' />";
-									}
-									echo "</td>";
-									echo "<td>" . $item['Name'] . "</td>";
-									echo "<td>" . $item['Price'] . "</td>";
-									echo "<td>" . $item['Add_Date'] ."</td>";
-									echo "<td>" . $item['category_name'] ."</td>";
-									echo "<td>" . $item['Username'] ."</td>";
-									echo "<td>
+						foreach ($items as $item) {
+							echo "<tr>";
+							echo "<td>";
+							if (empty($item['picture'])) {
+								echo "<img src='uploads/default.png' alt='' />";
+							} else {
+								echo "<img src='uploads/items/" . $item['picture'] . "' alt='' />";
+							}
+							echo "</td>";
+							echo "<td>" . $item['Name'] . "</td>";
+							echo "<td>" . $item['Price'] . "</td>";
+							echo "<td>" . $item['Add_Date'] . "</td>";
+							echo "<td>" . $item['category_name'] . "</td>";
+							echo "<td>" . $item['Username'] . "</td>";
+							echo "<td>
 										<a href='items.php?do=Edit&itemid=" . $item['Item_ID'] . "' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
 										<a href='items.php?do=Delete&itemid=" . $item['Item_ID'] . "' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>";
-										if ($item['Approve'] == 0) {
-											echo "<a 
+							if ($item['Approve'] == 0) {
+								echo "<a 
 													href='items.php?do=Approve&itemid=" . $item['Item_ID'] . "' 
 													class='btn btn-info activate'>
 													<i class='fa fa-check'></i> Approve</a>";
-										}
-									echo "</td>";
-								echo "</tr>";
 							}
+							echo "</td>";
+							echo "</tr>";
+						}
 						?>
 						<tr>
 					</table>
@@ -99,34 +99,344 @@
 				</a>
 			</div>
 
-			<?php } else {
+		<?php } else {
 
-				echo '<div class="container">';
-					echo '<div class="nice-message">There\'s No Items To Show</div>';
-					echo '<a href="items.php?do=Add" class="btn btn-sm btn-primary">
+			echo '<div class="container">';
+			echo '<div class="nice-message">There\'s No Items To Show</div>';
+			echo '<a href="items.php?do=Add" class="btn btn-sm btn-primary">
 							<i class="fa fa-plus"></i> New Item
 						</a>';
-				echo '</div>';
+			echo '</div>';
+		} ?>
 
-			} ?>
+	<?php
 
-		<?php 
+	} elseif ($do == 'Add') { ?>
 
-		} elseif ($do == 'Add') { ?>
+		<h1 class="text-center">Add New Item</h1>
+		<div class="container">
+			<form class="form-horizontal" action="?do=Insert" method="POST" enctype="multipart/form-data">
+				<!-- Start Name Field -->
+				<div class="form-group form-group-lg">
+					<label class="col-sm-2 control-label">Name</label>
+					<div class="col-sm-10 col-md-6">
+						<input
+							type="text"
+							name="name"
+							class="form-control"
+							required="required"
+							placeholder="Name of The Item" />
+					</div>
+				</div>
+				<!-- End Name Field -->
+				<!-- Start Description Field -->
+				<div class="form-group form-group-lg">
+					<label class="col-sm-2 control-label">Description</label>
+					<div class="col-sm-10 col-md-6">
+						<input
+							type="text"
+							name="description"
+							class="form-control"
+							required="required"
+							placeholder="Description of The Item" />
+					</div>
+				</div>
+				<!-- End Description Field -->
+				<!-- Start Price Field -->
+				<div class="form-group form-group-lg">
+					<label class="col-sm-2 control-label">Contact</label>
+					<div class="col-sm-10 col-md-6">
+						<input
+							type="text"
+							name="contact"
+							class="form-control"
+							required="required"
+							placeholder="Phone Number of the Item owner" />
+					</div>
+				</div>
+				<!-- End Price Field -->
+				<!-- Start Price Field -->
+				<div class="form-group form-group-lg">
+					<label class="col-sm-2 control-label">Price</label>
+					<div class="col-sm-10 col-md-6">
+						<input
+							type="text"
+							name="price"
+							class="form-control"
+							required="required"
+							placeholder="Price of The Item" />
+					</div>
+				</div>
+				<!-- End Price Field -->
+				<!-- Start Country Field -->
+				<div class="form-group form-group-lg">
+					<label class="col-sm-2 control-label">Country</label>
+					<div class="col-sm-10 col-md-6">
+						<input
+							type="text"
+							name="country"
+							class="form-control"
+							required="required"
+							placeholder="Country of Made" />
+					</div>
+				</div>
+				<!-- End Country Field -->
+				<!-- Start Status Field -->
+				<div class="form-group form-group-lg">
+					<label class="col-sm-2 control-label">Status</label>
+					<div class="col-sm-10 col-md-6">
+						<select name="status">
+							<option value="0">...</option>
+							<option value="1">New</option>
+							<option value="2">Like New</option>
+							<option value="3">Used</option>
+							<option value="4">Very Old</option>
+						</select>
+					</div>
+				</div>
+				<!-- End Status Field -->
+				<!-- Start Members Field -->
+				<div class="form-group form-group-lg">
+					<label class="col-sm-2 control-label">Member</label>
+					<div class="col-sm-10 col-md-6">
+						<select name="member">
+							<option value="0">...</option>
+							<?php
+							$allMembers = getAllFrom("*", "users", "", "", "UserID");
+							foreach ($allMembers as $user) {
+								echo "<option value='" . $user['UserID'] . "'>" . $user['Username'] . "</option>";
+							}
+							?>
+						</select>
+					</div>
+				</div>
+				<!-- End Members Field -->
+				<!-- Start Categories Field -->
+				<div class="form-group form-group-lg">
+					<label class="col-sm-2 control-label">Category</label>
+					<div class="col-sm-10 col-md-6">
+						<select name="category">
+							<option value="0">...</option>
+							<?php
+							$allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID");
+							foreach ($allCats as $cat) {
+								echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
+								$childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID");
+								foreach ($childCats as $child) {
+									echo "<option value='" . $child['ID'] . "'>--- " . $child['Name'] . "</option>";
+								}
+							}
+							?>
+						</select>
+					</div>
+				</div>
+				<!-- End Categories Field -->
+				<!-- Start Tags Field -->
+				<div class="form-group form-group-lg">
+					<label class="col-sm-2 control-label">Picture</label>
+					<div class="col-sm-10 col-md-6">
+						<input
+							type="file"
+							name="picture"
+							class="form-control" />
+					</div>
+				</div>
+				<!-- End Tags Field -->
+				<!-- Start Submit Field -->
+				<div class="form-group form-group-lg">
+					<div class="col-sm-offset-2 col-sm-10">
+						<input type="submit" value="Add Item" class="btn btn-primary btn-sm" />
+					</div>
+				</div>
+				<!-- End Submit Field -->
+			</form>
+		</div>
 
-			<h1 class="text-center">Add New Item</h1>
+		<?php
+
+	} elseif ($do == 'Insert') {
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			echo "<h1 class='text-center'>Insert Item</h1>";
+			echo "<div class='container'>";
+
+			// Upload Variables
+
+			$avatarName = $_FILES['picture']['name'];
+			$avatarSize = $_FILES['picture']['size'];
+			$avatarTmp	= $_FILES['picture']['tmp_name'];
+			$avatarType = $_FILES['picture']['type'];
+
+			// List Of Allowed File Typed To Upload
+
+			$avatarAllowedExtension = array("jpeg", "jpg", "png", "gif");
+
+			// Get Avatar Extension
+
+			$ref = explode('.', $avatarName);
+			$avatarExtension = strtolower(end($ref));
+
+			// Get Variables From The Form
+
+			$name		= $_POST['name'];
+			$desc 		= $_POST['description'];
+			$price 		= $_POST['price'];
+			$country 	= $_POST['country'];
+			$status 	= $_POST['status'];
+			$member 	= $_POST['member'];
+			$cat 		= $_POST['category'];
+			$contact	= $_POST['contact'];
+
+			// Validate The Form
+
+			$formErrors = array();
+
+			if (empty($name)) {
+				$formErrors[] = 'Name Can\'t be <strong>Empty</strong>';
+			}
+
+			if (empty($desc)) {
+				$formErrors[] = 'Description Can\'t be <strong>Empty</strong>';
+			}
+
+			if (empty($contact)) {
+				$formErrors[] = 'Contact Can\'t be <strong>Empty</strong>';
+			}
+
+			if (empty($price)) {
+				$formErrors[] = 'Price Can\'t be <strong>Empty</strong>';
+			}
+
+			if (empty($country)) {
+				$formErrors[] = 'Country Can\'t be <strong>Empty</strong>';
+			}
+
+			if ($status == 0) {
+				$formErrors[] = 'You Must Choose the <strong>Status</strong>';
+			}
+
+			if ($member == 0) {
+				$formErrors[] = 'You Must Choose the <strong>Member</strong>';
+			}
+
+			if ($cat == 0) {
+				$formErrors[] = 'You Must Choose the <strong>Category</strong>';
+			}
+
+			if (! empty($avatarName) && ! in_array($avatarExtension, $avatarAllowedExtension)) {
+				$formErrors[] = 'This Extension Is Not <strong>Allowed</strong>';
+			}
+
+			if (empty($avatarName)) {
+				$formErrors[] = 'Item Picture Is <strong>Required</strong>';
+			}
+
+			if ($avatarSize > 4194304) {
+				$formErrors[] = 'Avatar Cant Be Larger Than <strong>4MB</strong>';
+			}
+
+			// Loop Into Errors Array And Echo It
+
+			foreach ($formErrors as $error) {
+				echo '<div class="alert alert-danger">' . htmlspecialchars($error, ENT_QUOTES, 'UTF-8') . '</div>';
+			}
+
+			// Check If There's No Error Proceed The Update Operation
+
+			if (empty($formErrors)) {
+
+				$avatar = rand(0, 10000000000) . '_' . $avatarName;
+
+				move_uploaded_file($avatarTmp, "uploads\items\\" . $avatar);
+
+				// Insert Userinfo In Database
+
+				$stmt = $con->prepare("INSERT INTO 
+
+						items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID, picture, contact)
+
+						VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :zpicture, :zcontact)");
+
+				$stmt->execute(array(
+
+					'zname' 	=> $name,
+					'zdesc' 	=> $desc,
+					'zprice' 	=> $price,
+					'zcountry' 	=> $country,
+					'zstatus' 	=> $status,
+					'zcat'		=> $cat,
+					'zmember'	=> $member,
+					'zpicture'	=> $avatar,
+					'zcontact'	=> $contact
+
+				));
+
+				// Echo Success Message
+
+				$theMsg = "<div class='alert alert-success'>" . htmlspecialchars($stmt->rowCount(), ENT_QUOTES, 'UTF-8') . ' Record Inserted</div>';
+
+				$seconds = 3;
+
+				echo $theMsg;
+
+				echo "<div class='alert alert-info'>You Will Be Redirected After $seconds Seconds.</div>";
+
+				header("refresh:$seconds;url='items.php'");
+			}
+		} else {
+
+			echo "<div class='container'>";
+
+			$theMsg = '<div class="alert alert-danger">Sorry You Cant Browse This Page Directly</div>';
+
+			redirectHome($theMsg);
+
+			echo "</div>";
+		}
+
+		echo "</div>";
+	} elseif ($do == 'Edit') {
+
+		// Check If Get Request item Is Numeric & Get Its Integer Value
+
+		$itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
+
+		// Select All Data Depend On This ID
+
+		$stmt = $con->prepare("SELECT * FROM items WHERE Item_ID = ?");
+
+		// Execute Query
+
+		$stmt->execute(array($itemid));
+
+		// Fetch The Data
+
+		$item = $stmt->fetch();
+
+		// The Row Count
+
+		$count = $stmt->rowCount();
+
+		// If There's Such ID Show The Form
+
+		if ($count > 0) { ?>
+
+			<h1 class="text-center">Edit Item</h1>
 			<div class="container">
-				<form class="form-horizontal" action="?do=Insert" method="POST" enctype="multipart/form-data">
+				<form class="form-horizontal" action="?do=Update" method="POST">
+					<input type="hidden" name="itemid" value="<?php echo $itemid ?>" />
 					<!-- Start Name Field -->
 					<div class="form-group form-group-lg">
 						<label class="col-sm-2 control-label">Name</label>
 						<div class="col-sm-10 col-md-6">
-							<input 
-								type="text" 
-								name="name" 
-								class="form-control" 
-								required="required"  
-								placeholder="Name of The Item" />
+							<input
+								type="text"
+								name="name"
+								class="form-control"
+								required="required"
+								placeholder="Name of The Item"
+								value="<?php echo $item['Name'] ?>" />
 						</div>
 					</div>
 					<!-- End Name Field -->
@@ -134,38 +444,41 @@
 					<div class="form-group form-group-lg">
 						<label class="col-sm-2 control-label">Description</label>
 						<div class="col-sm-10 col-md-6">
-							<input 
-								type="text" 
-								name="description" 
-								class="form-control" 
-								required="required"  
-								placeholder="Description of The Item" />
+							<input
+								type="text"
+								name="description"
+								class="form-control"
+								required="required"
+								placeholder="Description of The Item"
+								value="<?php echo $item['Description'] ?>" />
 						</div>
 					</div>
 					<!-- End Description Field -->
-					<!-- Start Price Field -->
+					<!-- Start Contact Field -->
 					<div class="form-group form-group-lg">
 						<label class="col-sm-2 control-label">Contact</label>
 						<div class="col-sm-10 col-md-6">
-							<input 
-								type="text" 
-								name="contact" 
-								class="form-control" 
-								required="required" 
-								placeholder="Phone Number of the Item owner" />
+							<input
+								type="text"
+								name="contact"
+								class="form-control"
+								required="required"
+								placeholder="Phone Number of the Item owner"
+								value="<?php echo $item['contact'] ?>" />
 						</div>
 					</div>
-					<!-- End Price Field -->
+					<!-- End Contact Field -->
 					<!-- Start Price Field -->
 					<div class="form-group form-group-lg">
 						<label class="col-sm-2 control-label">Price</label>
 						<div class="col-sm-10 col-md-6">
-							<input 
-								type="text" 
-								name="price" 
-								class="form-control" 
-								required="required" 
-								placeholder="Price of The Item" />
+							<input
+								type="text"
+								name="price"
+								class="form-control"
+								required="required"
+								placeholder="Price of The Item"
+								value="<?php echo $item['Price'] ?>" />
 						</div>
 					</div>
 					<!-- End Price Field -->
@@ -173,12 +486,13 @@
 					<div class="form-group form-group-lg">
 						<label class="col-sm-2 control-label">Country</label>
 						<div class="col-sm-10 col-md-6">
-							<input 
-								type="text" 
-								name="country" 
-								class="form-control" 
-								required="required" 
-								placeholder="Country of Made" />
+							<input
+								type="text"
+								name="country"
+								class="form-control"
+								required="required"
+								placeholder="Country of Made"
+								value="<?php echo $item['Country_Made'] ?>" />
 						</div>
 					</div>
 					<!-- End Country Field -->
@@ -187,11 +501,18 @@
 						<label class="col-sm-2 control-label">Status</label>
 						<div class="col-sm-10 col-md-6">
 							<select name="status">
-								<option value="0">...</option>
-								<option value="1">New</option>
-								<option value="2">Like New</option>
-								<option value="3">Used</option>
-								<option value="4">Very Old</option>
+								<option value="1" <?php if ($item['Status'] == 1) {
+														echo 'selected';
+													} ?>>New</option>
+								<option value="2" <?php if ($item['Status'] == 2) {
+														echo 'selected';
+													} ?>>Like New</option>
+								<option value="3" <?php if ($item['Status'] == 3) {
+														echo 'selected';
+													} ?>>Used</option>
+								<option value="4" <?php if ($item['Status'] == 4) {
+														echo 'selected';
+													} ?>>Very Old</option>
 							</select>
 						</div>
 					</div>
@@ -201,12 +522,15 @@
 						<label class="col-sm-2 control-label">Member</label>
 						<div class="col-sm-10 col-md-6">
 							<select name="member">
-								<option value="0">...</option>
 								<?php
-									$allMembers = getAllFrom("*", "users", "", "", "UserID");
-									foreach ($allMembers as $user) {
-										echo "<option value='" . $user['UserID'] . "'>" . $user['Username'] . "</option>";
+								$allMembers = getAllFrom("*", "users", "", "", "UserID");
+								foreach ($allMembers as $user) {
+									echo "<option value='" . $user['UserID'] . "'";
+									if ($item['Member_ID'] == $user['UserID']) {
+										echo 'selected';
 									}
+									echo ">" . $user['Username'] . "</option>";
+								}
 								?>
 							</select>
 						</div>
@@ -217,356 +541,42 @@
 						<label class="col-sm-2 control-label">Category</label>
 						<div class="col-sm-10 col-md-6">
 							<select name="category">
-								<option value="0">...</option>
 								<?php
-									$allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID");
-									foreach ($allCats as $cat) {
-										echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
-										$childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID");
-										foreach ($childCats as $child) {
-											echo "<option value='" . $child['ID'] . "'>--- " . $child['Name'] . "</option>";
-										}
+								$allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID");
+								foreach ($allCats as $cat) {
+									echo "<option value='" . $cat['ID'] . "'";
+									if ($item['Cat_ID'] == $cat['ID']) {
+										echo ' selected';
 									}
+									echo ">" . $cat['Name'] . "</option>";
+									$childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID");
+									foreach ($childCats as $child) {
+										echo "<option value='" . $child['ID'] . "'";
+										if ($item['Cat_ID'] == $child['ID']) {
+											echo ' selected';
+										}
+										echo ">--- " . $child['Name'] . "</option>";
+									}
+								}
 								?>
 							</select>
 						</div>
 					</div>
 					<!-- End Categories Field -->
-					<!-- Start Tags Field -->
-					<div class="form-group form-group-lg">
-						<label class="col-sm-2 control-label">Picture</label>
-						<div class="col-sm-10 col-md-6">
-							<input 
-								type="file" 
-								name="picture" 
-								class="form-control"  />
-						</div>
-					</div>
-					<!-- End Tags Field -->
 					<!-- Start Submit Field -->
 					<div class="form-group form-group-lg">
 						<div class="col-sm-offset-2 col-sm-10">
-							<input type="submit" value="Add Item" class="btn btn-primary btn-sm" />
+							<input type="submit" value="Save Item" class="btn btn-primary btn-sm" />
 						</div>
 					</div>
 					<!-- End Submit Field -->
 				</form>
-			</div>
 
-			<?php
+				<?php
 
-		} elseif ($do == 'Insert') {
+				// Select All Users Except Admin 
 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-				echo "<h1 class='text-center'>Insert Item</h1>";
-				echo "<div class='container'>";
-
-				// Upload Variables
-
-				$avatarName = $_FILES['picture']['name'];
-				$avatarSize = $_FILES['picture']['size'];
-				$avatarTmp	= $_FILES['picture']['tmp_name'];
-				$avatarType = $_FILES['picture']['type'];
-
-				// List Of Allowed File Typed To Upload
-
-				$avatarAllowedExtension = array("jpeg", "jpg", "png", "gif");
-
-				// Get Avatar Extension
-				
-				$ref = explode('.', $avatarName);
-				$avatarExtension = strtolower(end($ref));
-
-				// Get Variables From The Form
-
-				$name		= $_POST['name'];
-				$desc 		= $_POST['description'];
-				$price 		= $_POST['price'];
-				$country 	= $_POST['country'];
-				$status 	= $_POST['status'];
-				$member 	= $_POST['member'];
-				$cat 		= $_POST['category'];
-				$contact	= $_POST['contact'];
-
-				// Validate The Form
-
-				$formErrors = array();
-
-				if (empty($name)) {
-					$formErrors[] = 'Name Can\'t be <strong>Empty</strong>';
-				}
-
-				if (empty($desc)) {
-					$formErrors[] = 'Description Can\'t be <strong>Empty</strong>';
-				}
-
-				if (empty($contact)) {
-					$formErrors[] = 'Contact Can\'t be <strong>Empty</strong>';
-				}
-
-				if (empty($price)) {
-					$formErrors[] = 'Price Can\'t be <strong>Empty</strong>';
-				}
-
-				if (empty($country)) {
-					$formErrors[] = 'Country Can\'t be <strong>Empty</strong>';
-				}
-
-				if ($status == 0) {
-					$formErrors[] = 'You Must Choose the <strong>Status</strong>';
-				}
-
-				if ($member == 0) {
-					$formErrors[] = 'You Must Choose the <strong>Member</strong>';
-				}
-
-				if ($cat == 0) {
-					$formErrors[] = 'You Must Choose the <strong>Category</strong>';
-				}
-
-				if (! empty($avatarName) && ! in_array($avatarExtension, $avatarAllowedExtension)) {
-					$formErrors[] = 'This Extension Is Not <strong>Allowed</strong>';
-				}
-
-				if (empty($avatarName)) {
-					$formErrors[] = 'Item Picture Is <strong>Required</strong>';
-				}
-
-				if ($avatarSize > 4194304) {
-					$formErrors[] = 'Avatar Cant Be Larger Than <strong>4MB</strong>';
-				}
-
-				// Loop Into Errors Array And Echo It
-
-				foreach($formErrors as $error) {
-					echo '<div class="alert alert-danger">' . $error . '</div>';
-				}
-
-				// Check If There's No Error Proceed The Update Operation
-
-				if (empty($formErrors)) {
-
-					$avatar = rand(0, 10000000000) . '_' . $avatarName;
-
-					move_uploaded_file($avatarTmp, "uploads\items\\" . $avatar);
-
-					// Insert Userinfo In Database
-
-					$stmt = $con->prepare("INSERT INTO 
-
-						items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID, picture, contact)
-
-						VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember, :zpicture, :zcontact)");
-
-					$stmt->execute(array(
-
-						'zname' 	=> $name,
-						'zdesc' 	=> $desc,
-						'zprice' 	=> $price,
-						'zcountry' 	=> $country,
-						'zstatus' 	=> $status,
-						'zcat'		=> $cat,
-						'zmember'	=> $member,
-						'zpicture'	=> $avatar,
-						'zcontact'	=> $contact
-
-					));
-
-					// Echo Success Message
-
-					$theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Inserted</div>';
-
-					$seconds = 3;
-
-					echo $theMsg;
-
-					echo "<div class='alert alert-info'>You Will Be Redirected After $seconds Seconds.</div>";
-		
-					header("refresh:$seconds;url='items.php'");
-				}
-
-			} else {
-
-				echo "<div class='container'>";
-
-				$theMsg = '<div class="alert alert-danger">Sorry You Cant Browse This Page Directly</div>';
-
-				redirectHome($theMsg);
-
-				echo "</div>";
-
-			}
-
-			echo "</div>";
-
-		} elseif ($do == 'Edit') {
-
-			// Check If Get Request item Is Numeric & Get Its Integer Value
-
-			$itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
-
-			// Select All Data Depend On This ID
-
-			$stmt = $con->prepare("SELECT * FROM items WHERE Item_ID = ?");
-
-			// Execute Query
-
-			$stmt->execute(array($itemid));
-
-			// Fetch The Data
-
-			$item = $stmt->fetch();
-
-			// The Row Count
-
-			$count = $stmt->rowCount();
-
-			// If There's Such ID Show The Form
-
-			if ($count > 0) { ?>
-
-				<h1 class="text-center">Edit Item</h1>
-				<div class="container">
-					<form class="form-horizontal" action="?do=Update" method="POST">
-						<input type="hidden" name="itemid" value="<?php echo $itemid ?>" />
-						<!-- Start Name Field -->
-						<div class="form-group form-group-lg">
-							<label class="col-sm-2 control-label">Name</label>
-							<div class="col-sm-10 col-md-6">
-								<input 
-									type="text" 
-									name="name" 
-									class="form-control" 
-									required="required"  
-									placeholder="Name of The Item"
-									value="<?php echo $item['Name'] ?>" />
-							</div>
-						</div>
-						<!-- End Name Field -->
-						<!-- Start Description Field -->
-						<div class="form-group form-group-lg">
-							<label class="col-sm-2 control-label">Description</label>
-							<div class="col-sm-10 col-md-6">
-								<input 
-									type="text" 
-									name="description" 
-									class="form-control" 
-									required="required"  
-									placeholder="Description of The Item"
-									value="<?php echo $item['Description'] ?>" />
-							</div>
-						</div>
-						<!-- End Description Field -->
-						<!-- Start Contact Field -->
-						<div class="form-group form-group-lg">
-							<label class="col-sm-2 control-label">Contact</label>
-							<div class="col-sm-10 col-md-6">
-								<input 
-									type="text" 
-									name="contact" 
-									class="form-control" 
-									required="required" 
-									placeholder="Phone Number of the Item owner"
-									value="<?php echo $item['contact'] ?>" />
-							</div>
-						</div>
-						<!-- End Contact Field -->
-						<!-- Start Price Field -->
-						<div class="form-group form-group-lg">
-							<label class="col-sm-2 control-label">Price</label>
-							<div class="col-sm-10 col-md-6">
-								<input 
-									type="text" 
-									name="price" 
-									class="form-control" 
-									required="required" 
-									placeholder="Price of The Item"
-									value="<?php echo $item['Price'] ?>" />
-							</div>
-						</div>
-						<!-- End Price Field -->
-						<!-- Start Country Field -->
-						<div class="form-group form-group-lg">
-							<label class="col-sm-2 control-label">Country</label>
-							<div class="col-sm-10 col-md-6">
-								<input 
-									type="text" 
-									name="country" 
-									class="form-control" 
-									required="required" 
-									placeholder="Country of Made"
-									value="<?php echo $item['Country_Made'] ?>" />
-							</div>
-						</div>
-						<!-- End Country Field -->
-						<!-- Start Status Field -->
-						<div class="form-group form-group-lg">
-							<label class="col-sm-2 control-label">Status</label>
-							<div class="col-sm-10 col-md-6">
-								<select name="status">
-									<option value="1" <?php if ($item['Status'] == 1) { echo 'selected'; } ?>>New</option>
-									<option value="2" <?php if ($item['Status'] == 2) { echo 'selected'; } ?>>Like New</option>
-									<option value="3" <?php if ($item['Status'] == 3) { echo 'selected'; } ?>>Used</option>
-									<option value="4" <?php if ($item['Status'] == 4) { echo 'selected'; } ?>>Very Old</option>
-								</select>
-							</div>
-						</div>
-						<!-- End Status Field -->
-						<!-- Start Members Field -->
-						<div class="form-group form-group-lg">
-							<label class="col-sm-2 control-label">Member</label>
-							<div class="col-sm-10 col-md-6">
-								<select name="member">
-									<?php
-										$allMembers = getAllFrom("*", "users", "", "", "UserID");
-										foreach ($allMembers as $user) {
-											echo "<option value='" . $user['UserID'] . "'"; 
-											if ($item['Member_ID'] == $user['UserID']) { echo 'selected'; } 
-											echo ">" . $user['Username'] . "</option>";
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						<!-- End Members Field -->
-						<!-- Start Categories Field -->
-						<div class="form-group form-group-lg">
-							<label class="col-sm-2 control-label">Category</label>
-							<div class="col-sm-10 col-md-6">
-								<select name="category">
-									<?php
-										$allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID");
-										foreach ($allCats as $cat) {
-											echo "<option value='" . $cat['ID'] . "'";
-											if ($item['Cat_ID'] == $cat['ID']) { echo ' selected'; }
-											echo ">" . $cat['Name'] . "</option>";
-											$childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID");
-											foreach ($childCats as $child) {
-												echo "<option value='" . $child['ID'] . "'";
-												if ($item['Cat_ID'] == $child['ID']) { echo ' selected'; }
-												echo ">--- " . $child['Name'] . "</option>";
-											}
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						<!-- End Categories Field -->
-						<!-- Start Submit Field -->
-						<div class="form-group form-group-lg">
-							<div class="col-sm-offset-2 col-sm-10">
-								<input type="submit" value="Save Item" class="btn btn-primary btn-sm" />
-							</div>
-						</div>
-						<!-- End Submit Field -->
-					</form>
-
-					<?php
-
-					// Select All Users Except Admin 
-
-					$stmt = $con->prepare("SELECT 
+				$stmt = $con->prepare("SELECT 
 												comments.*, users.Username AS Member  
 											FROM 
 												comments
@@ -576,17 +586,17 @@
 												users.UserID = comments.user_id
 											WHERE item_id = ?");
 
-					// Execute The Statement
+				// Execute The Statement
 
-					$stmt->execute(array($itemid));
+				$stmt->execute(array($itemid));
 
-					// Assign To Variable 
+				// Assign To Variable 
 
-					$rows = $stmt->fetchAll();
+				$rows = $stmt->fetchAll();
 
-					if (! empty($rows)) {
-						
-					?>
+				if (! empty($rows)) {
+
+				?>
 					<h1 class="text-center">Manage [ <?php echo $item['Name'] ?> ] Comments</h1>
 					<div class="table-responsive">
 						<table class="main-table text-center table table-bordered">
@@ -597,114 +607,112 @@
 								<td>Control</td>
 							</tr>
 							<?php
-								foreach($rows as $row) {
-									echo "<tr>";
-										echo "<td>" . $row['comment'] . "</td>";
-										echo "<td>" . $row['Member'] . "</td>";
-										echo "<td>" . $row['comment_date'] ."</td>";
-										echo "<td>
+							foreach ($rows as $row) {
+								echo "<tr>";
+								echo "<td>" . $row['comment'] . "</td>";
+								echo "<td>" . $row['Member'] . "</td>";
+								echo "<td>" . $row['comment_date'] . "</td>";
+								echo "<td>
 											<a href='comments.php?do=Edit&comid=" . $row['c_id'] . "' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
 											<a href='comments.php?do=Delete&comid=" . $row['c_id'] . "' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>";
-											if ($row['status'] == 0) {
-												echo "<a href='comments.php?do=Approve&comid="
-														 . $row['c_id'] . "' 
+								if ($row['status'] == 0) {
+									echo "<a href='comments.php?do=Approve&comid="
+										. $row['c_id'] . "' 
 														class='btn btn-info activate'>
 														<i class='fa fa-check'></i> Approve</a>";
-											}
-										echo "</td>";
-									echo "</tr>";
 								}
+								echo "</td>";
+								echo "</tr>";
+							}
 							?>
 							<tr>
 						</table>
 					</div>
-					<?php } ?>
-				</div>
+				<?php } ?>
+			</div>
 
-			<?php
+<?php
 
 			// If There's No Such ID Show Error Message
 
-			} else {
+		} else {
 
-				echo "<div class='container'>";
-
-				$theMsg = '<div class="alert alert-danger">Theres No Such ID</div>';
-
-				redirectHome($theMsg);
-
-				echo "</div>";
-
-			}			
-
-		} elseif ($do == 'Update') {
-
-			echo "<h1 class='text-center'>Update Item</h1>";
 			echo "<div class='container'>";
 
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$theMsg = '<div class="alert alert-danger">Theres No Such ID</div>';
 
-				// Get Variables From The Form
+			redirectHome($theMsg);
 
-				$id 		= $_POST['itemid'];
-				$name 		= $_POST['name'];
-				$desc 		= $_POST['description'];
-				$price 		= $_POST['price'];
-				$country	= $_POST['country'];
-				$status 	= $_POST['status'];
-				$cat 		= $_POST['category'];
-				$member 	= $_POST['member'];
-				$contact 	= $_POST['contact'];
+			echo "</div>";
+		}
+	} elseif ($do == 'Update') {
 
-				// Validate The Form
+		echo "<h1 class='text-center'>Update Item</h1>";
+		echo "<div class='container'>";
 
-				$formErrors = array();
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-				if (empty($name)) {
-					$formErrors[] = 'Name Can\'t be <strong>Empty</strong>';
-				}
+			// Get Variables From The Form
 
-				if (empty($desc)) {
-					$formErrors[] = 'Description Can\'t be <strong>Empty</strong>';
-				}
+			$id 		= $_POST['itemid'];
+			$name 		= $_POST['name'];
+			$desc 		= $_POST['description'];
+			$price 		= $_POST['price'];
+			$country	= $_POST['country'];
+			$status 	= $_POST['status'];
+			$cat 		= $_POST['category'];
+			$member 	= $_POST['member'];
+			$contact 	= $_POST['contact'];
 
-				if (empty($contact)) {
-					$formErrors[] = 'Contact Can\'t be <strong>Empty</strong>';
-				}
+			// Validate The Form
 
-				if (empty($price)) {
-					$formErrors[] = 'Price Can\'t be <strong>Empty</strong>';
-				}
+			$formErrors = array();
 
-				if (empty($country)) {
-					$formErrors[] = 'Country Can\'t be <strong>Empty</strong>';
-				}
+			if (empty($name)) {
+				$formErrors[] = 'Name Can\'t be <strong>Empty</strong>';
+			}
 
-				if ($status == 0) {
-					$formErrors[] = 'You Must Choose the <strong>Status</strong>';
-				}
+			if (empty($desc)) {
+				$formErrors[] = 'Description Can\'t be <strong>Empty</strong>';
+			}
 
-				if ($member == 0) {
-					$formErrors[] = 'You Must Choose the <strong>Member</strong>';
-				}
+			if (empty($contact)) {
+				$formErrors[] = 'Contact Can\'t be <strong>Empty</strong>';
+			}
 
-				if ($cat == 0) {
-					$formErrors[] = 'You Must Choose the <strong>Category</strong>';
-				}
+			if (empty($price)) {
+				$formErrors[] = 'Price Can\'t be <strong>Empty</strong>';
+			}
 
-				// Loop Into Errors Array And Echo It
+			if (empty($country)) {
+				$formErrors[] = 'Country Can\'t be <strong>Empty</strong>';
+			}
 
-				foreach($formErrors as $error) {
-					echo '<div class="alert alert-danger">' . $error . '</div>';
-				}
+			if ($status == 0) {
+				$formErrors[] = 'You Must Choose the <strong>Status</strong>';
+			}
 
-				// Check If There's No Error Proceed The Update Operation
+			if ($member == 0) {
+				$formErrors[] = 'You Must Choose the <strong>Member</strong>';
+			}
 
-				if (empty($formErrors)) {
+			if ($cat == 0) {
+				$formErrors[] = 'You Must Choose the <strong>Category</strong>';
+			}
 
-					// Update The Database With This Info
+			// Loop Into Errors Array And Echo It
 
-					$stmt = $con->prepare("UPDATE 
+			foreach ($formErrors as $error) {
+				echo '<div class="alert alert-danger">' . htmlspecialchars($error, ENT_QUOTES, 'UTF-8') . '</div>';
+			}
+
+			// Check If There's No Error Proceed The Update Operation
+
+			if (empty($formErrors)) {
+
+				// Update The Database With This Info
+
+				$stmt = $con->prepare("UPDATE 
 												items 
 											SET 
 												Name = ?, 
@@ -718,115 +726,104 @@
 											WHERE 
 												Item_ID = ?");
 
-					$stmt->execute(array($name, $desc, $price, $country, $status, $cat, $member, $contact, $id));
+				$stmt->execute(array($name, $desc, $price, $country, $status, $cat, $member, $contact, $id));
 
-					// Echo Success Message
+				// Echo Success Message
 
-					$theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
+				$theMsg = "<div class='alert alert-success'>" . htmlspecialchars($stmt->rowCount(), ENT_QUOTES, 'UTF-8') . ' Record Updated</div>';
 
-					$seconds = 3;
+				$seconds = 3;
 
-					echo $theMsg;
+				echo $theMsg;
 
-					echo "<div class='alert alert-info'>You Will Be Redirected After $seconds Seconds.</div>";
-		
-					header("refresh:$seconds;url='items.php'");
+				echo "<div class='alert alert-info'>You Will Be Redirected After $seconds Seconds.</div>";
 
-				}
-
-			} else {
-
-				$theMsg = '<div class="alert alert-danger">Sorry You Cant Browse This Page Directly</div>';
-
-				redirectHome($theMsg);
-
+				header("refresh:$seconds;url='items.php'");
 			}
+		} else {
 
-			echo "</div>";
+			$theMsg = '<div class="alert alert-danger">Sorry You Cant Browse This Page Directly</div>';
 
-		} elseif ($do == 'Delete') {
-
-			echo "<h1 class='text-center'>Delete Item</h1>";
-			echo "<div class='container'>";
-
-				// Check If Get Request Item ID Is Numeric & Get The Integer Value Of It
-
-				$itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
-
-				// Select All Data Depend On This ID
-
-				$check = checkItem('Item_ID', 'items', $itemid);
-
-				// If There's Such ID Show The Form
-
-				if ($check > 0) {
-
-					$stmt = $con->prepare("DELETE FROM items WHERE Item_ID = :zid");
-
-					$stmt->bindParam(":zid", $itemid);
-
-					$stmt->execute();
-
-					$theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Deleted</div>';
-
-					redirectHome($theMsg, 'back');
-
-				} else {
-
-					$theMsg = '<div class="alert alert-danger">This ID is Not Exist</div>';
-
-					redirectHome($theMsg);
-
-				}
-
-			echo '</div>';
-
-		} elseif ($do == 'Approve') {
-
-			echo "<h1 class='text-center'>Approve Item</h1>";
-			echo "<div class='container'>";
-
-				// Check If Get Request Item ID Is Numeric & Get The Integer Value Of It
-
-				$itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
-
-				// Select All Data Depend On This ID
-
-				$check = checkItem('Item_ID', 'items', $itemid);
-
-				// If There's Such ID Show The Form
-
-				if ($check > 0) {
-
-					$stmt = $con->prepare("UPDATE items SET Approve = 1 WHERE Item_ID = ?");
-
-					$stmt->execute(array($itemid));
-
-					$theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
-
-					redirectHome($theMsg, 'back');
-
-				} else {
-
-					$theMsg = '<div class="alert alert-danger">This ID is Not Exist</div>';
-
-					redirectHome($theMsg);
-
-				}
-
-			echo '</div>';
-
+			redirectHome($theMsg);
 		}
 
-		include $tpl . 'footer.php';
+		echo "</div>";
+	} elseif ($do == 'Delete') {
 
-	} else {
+		echo "<h1 class='text-center'>Delete Item</h1>";
+		echo "<div class='container'>";
 
-		header('Location: index.php');
+		// Check If Get Request Item ID Is Numeric & Get The Integer Value Of It
 
-		exit();
+		$itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
+
+		// Select All Data Depend On This ID
+
+		$check = checkItem('Item_ID', 'items', $itemid);
+
+		// If There's Such ID Show The Form
+
+		if ($check > 0) {
+
+			$stmt = $con->prepare("DELETE FROM items WHERE Item_ID = :zid");
+
+			$stmt->bindParam(":zid", $itemid);
+
+			$stmt->execute();
+
+			$theMsg = "<div class='alert alert-success'>" . htmlspecialchars($stmt->rowCount(), ENT_QUOTES, 'UTF-8') . ' Record Deleted</div>';
+
+			redirectHome($theMsg, 'back');
+		} else {
+
+			$theMsg = '<div class="alert alert-danger">This ID is Not Exist</div>';
+
+			redirectHome($theMsg);
+		}
+
+		echo '</div>';
+	} elseif ($do == 'Approve') {
+
+		echo "<h1 class='text-center'>Approve Item</h1>";
+		echo "<div class='container'>";
+
+		// Check If Get Request Item ID Is Numeric & Get The Integer Value Of It
+
+		$itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
+
+		// Select All Data Depend On This ID
+
+		$check = checkItem('Item_ID', 'items', $itemid);
+
+		// If There's Such ID Show The Form
+
+		if ($check > 0) {
+
+			$stmt = $con->prepare("UPDATE items SET Approve = 1 WHERE Item_ID = ?");
+
+			$stmt->execute(array($itemid));
+
+			$theMsg = "<div class='alert alert-success'>" . htmlspecialchars($stmt->rowCount(), ENT_QUOTES, 'UTF-8') . ' Record Updated</div>';
+
+			redirectHome($theMsg, 'back');
+		} else {
+
+			$theMsg = '<div class="alert alert-danger">This ID is Not Exist</div>';
+
+			redirectHome($theMsg);
+		}
+
+		echo '</div>';
 	}
 
-	ob_end_flush(); // Release The Output
+	include $tpl . 'footer.php';
+} else {
+
+	header('Location: index.php');
+
+	exit();
+}
+
+ob_end_flush(); // Release The Output
 
 ?>

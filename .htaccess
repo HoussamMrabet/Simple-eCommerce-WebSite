@@ -1,0 +1,13 @@
+<IfModule mod_headers.c>
+  # Apply CSP to all files
+  <FilesMatch ".*">
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none';"
+  </FilesMatch>
+
+  # Apply to known static files if not caught by FilesMatch
+  <FilesMatch "\.(png|jpg|jpeg|gif|svg|txt|xml)$">
+    Header always set Content-Security-Policy "default-src 'self';"
+  </FilesMatch>
+
+  Header always set X-Content-Type-Options "nosniff"
+</IfModule>

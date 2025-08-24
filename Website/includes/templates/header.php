@@ -19,7 +19,7 @@
 				<img class="my-image img-circle" src="admin/uploads/avatars/<?php echo $sessionAvatar ?>" alt="" />
 				<div class="btn-group my-info">
 					<span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						<?php echo $sessionUser ?>
+						<?php echo htmlspecialchars($sessionUser, ENT_QUOTES, 'UTF-8') ?>
 						<span class="caret"></span>
 					</span>
 					<ul class="dropdown-menu">

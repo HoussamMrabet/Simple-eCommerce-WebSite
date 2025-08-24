@@ -8,9 +8,6 @@
 	*/
 
 	ob_start(); // Output Buffering Start
-
-	session_start();
-
 	$pageTitle = 'Comments';
 
 	if (isset($_SESSION['Username'])) {

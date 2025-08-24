@@ -1,75 +1,86 @@
-# Ecommerce Web App
+# SWE4356 Group Project - Security Testing of Web Applications 
 
-This is an ecommerce web application developed using PHP and MySQL, with Bootstrap for the user interface. The application allows visitors to browse products, view individual product descriptions, leave feedback in the comment section, and view seller information. Sellers need to register and await admin confirmation before they can start posting their products for sale. Each product requires admin approval before it is displayed to buyers. The admin has their own interface to manage seller accounts, products, comments, and other aspects of the application.
+A security-audited fork of a PHP e-commerce platform [Simple E-Commerce Web Application](https://github.com/HoussamMrabet/Simple-eCommerce-WebSite) for the **SWE4356 Secure Software Development** course.
 
-## Getting Started
+This project focuses on identifying and resolving real-world web security vulnerabilities through both **manual inspection** and **automated testing** using OWASP ZAP.
 
-To get started with this ecommerce web app, follow the steps below:
+---
 
-### Prerequisites
+## Group Member – Group 1
 
-- PHP (version >= 7.0)
-- MySQL (version >= 5.7)
-- Web server (e.g., Apache)
+| Name             | Matric Number |
+|------------------|---------------|
+| Chan Ci En       | 215035        |
+| Khoo Boo Jing    | 215382        |
+| Loo Huai Yuan    | 215516        |
+| Chu Xing En      | 215090        |
+| Loh Joe Ying     | 215507        |
+| Tan Yong Jin     | 217086        |
 
-### Installation
+---
 
-1. Clone the repository or download the source code.
+## Setup & Usage
 
-2. Import the database into your local MySQL server:
-   - Locate the database file (`database.sql`) in the project folder.
-   - Import the database file into your MySQL server using a tool like phpMyAdmin or the MySQL command line.
+### 1. Clone the repository:
+```
+git clone https://github.com/Chance3009/ecommerce-secure-patch.git
+cd ecommerce-secure-patch
+```
 
-3. Configure the database connection:
-   - Open the `config.php` file in the project folder.
-   - Update the database credentials (hostname, username, password, and database name) to match your local setup.
+### 2. Import the database:
+- Open `phpMyAdmin` or use MySQL CLI
+- Import `database.sql` into your MySQL server
 
-4. Start the web server:
-   - Configure your web server to serve the project folder (e.g., set up a virtual host).
-   - Ensure that PHP is properly configured with your web server.
+### 3. Configure the database connection:
+- Open `connect.php`
+- Update the host, username, password, and database name
 
-5. Access the application:
-   - Open a web browser and navigate to the configured URL for the application.
-   - You should now be able to access the ecommerce web app.
+### 4. Run the application:
+- Use XAMPP/LAMP/MAMP to host the project locally
+- Visit:
+```
+http://localhost/ecommerce-secure-patch
+```
 
-## Features
-
-- User Registration:
-  - Visitors can register as sellers to post products for sale.
-  - Sellers must wait for admin confirmation before they can start posting products.
-
-- Product Listing:
-  - Visitors can browse and view a list of available products.
-  - Each product has a description page with detailed information.
-
-- Comment Section:
-  - Users can leave feedback and comments on product description pages.
-
-- Seller Information:
-  - Product descriptions display seller information.
-
-- Admin Interface:
-  - The admin has a dedicated interface to manage seller accounts, products, and comments.
-  - Admin approval is required for new seller registrations and product postings.
-
-## Contributing
-
-Contributions are welcome! If you'd like to contribute to this ecommerce web app, please follow these steps:
-
-1. Fork the repository.
-
-2. Create a new branch for your feature or bug fix.
-
-3. Make your changes and commit them to your branch.
-
-4. Push your changes to your forked repository.
-
-5. Submit a pull request describing your changes.
+---
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).  
+Original base project by [HoussamMrabet](https://github.com/HoussamMrabet/Simple-eCommerce-WebSite).
 
-## Contact
+---
 
-For any inquiries or feedback, please contact [houssammrabet5@gmail.com](mailto:houssammrabet5@gmail.com).
+## Contributing
+
+We use a branch-based workflow. Follow these steps to contribute:
+
+1. Clone this repository (if not already):
+   ```
+   git clone https://github.com/Chance3009/ecommerce-secure-patch.git
+   cd ecommerce-secure-patch
+   ```
+
+2. Create a new branch for your fix:
+   ```
+   git checkout -b fix/<issue-keywords>-<your-name-initials>
+   ```
+
+3. Make your changes and commit them:
+   ```
+   git add .
+   git commit -m "fix: brief description of your fix"
+   ```
+
+4. Push your branch to GitHub:
+   ```
+   git push origin fix/<issue-keywords>-<your-name-initials>
+   ```
+
+5. Open a Pull Request targeting the `master` branch with:
+   - A clear title (e.g., `fix: added CSP header to prevent XSS`)
+   - Description of the fix
+
+6. Wait for review and approval from the project lead before merging.
+
+Please follow naming conventions and ensure your fix is tested locally before submitting.

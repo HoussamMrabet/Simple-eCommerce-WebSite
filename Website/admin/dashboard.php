@@ -1,9 +1,6 @@
 <?php
 
 	ob_start(); // Output Buffering Start
-
-	session_start();
-
 	if (isset($_SESSION['Username'])) {
 
 		$pageTitle = 'Dashboard';

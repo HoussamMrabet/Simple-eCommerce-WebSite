@@ -1,6 +1,5 @@
 <?php
 
-session_start();
 include 'init.php';
 
 echo "<h1 class='text-center'>Update Member</h1>";
@@ -10,10 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Get Variables From The Form
 
-    $id 	= $_POST['userid'];
-    $user 	= $_POST['username'];
-    $email 	= $_POST['email'];
-    $name 	= $_POST['full'];
+    $id     = $_POST['userid'];
+    $user     = $_POST['username'];
+    $email     = $_POST['email'];
+    $name     = $_POST['full'];
 
     // Password Trick
 
@@ -45,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Loop Into Errors Array And Echo It
 
-    foreach($formErrors as $error) {
-        echo '<div class="alert alert-danger">' . $error . '</div>';
+    foreach ($formErrors as $error) {
+        echo '<div class="alert alert-danger">' . htmlspecialchars($error, ENT_QUOTES, 'UTF-8') . '</div>';
     }
 
     // Check If There's No Error Proceed The Update Operation
@@ -71,8 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $theMsg = '<div class="alert alert-danger">Sorry This User Is Exist</div>';
 
             redirectHome($theMsg, 'back');
-
-        } else { 
+        } else {
 
             // Update The Database With This Info
 
@@ -82,26 +80,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Echo Success Message
 
-            $theMsg = "<div class='alert alert-success'>" . $stmt->rowCount() . ' Record Updated</div>';
+            $theMsg = "<div class='alert alert-success'>" . htmlspecialchars($stmt->rowCount(), ENT_QUOTES, 'UTF-8') . ' Record Updated</div>';
 
             echo $theMsg;
 
             $seconds = 2;
 
-		    echo "<div class='alert alert-info'>You Will Be Redirected to your profil After $seconds Seconds.</div>";
+            echo "<div class='alert alert-info'>You Will Be Redirected to your profil After $seconds Seconds.</div>";
 
-		    header("refresh:$seconds;url='profile.php'");
-
+            header("refresh:$seconds;url='profile.php'");
         }
-
     }
-
 } else {
 
     $theMsg = '<div class="alert alert-danger">Sorry You Cant Browse This Page Directly</div>';
 
     redirectHome($theMsg);
-
 }
 
 echo "</div>";

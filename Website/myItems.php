@@ -1,5 +1,4 @@
 <?php 
-	session_start();
 	include 'init.php';
 ?>
 
@@ -11,7 +10,7 @@
                 return $q->fetchColumn();
             }
             $myCategory = getSingleValue($con, "SELECT UserID FROM users WHERE username=?", [$_SESSION['user']]);
-			$allItems = getAllFrom("*", "items", "where Member_ID = {$myCategory}", "AND Approve = 1", "Item_ID");
+			$allItems = getAllFrom("*", "items", "WHERE Member_ID = {$myCategory}", "AND Approve = 1", "Item_ID");			
 			echo '<h1 class="text-center">My Items</h1>';
 			echo '<div class="row">';
 			foreach ($allItems as $item) {

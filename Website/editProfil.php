@@ -1,6 +1,4 @@
 <?php 
-
-	session_start();
 	include 'init.php';
 
 // Get the User ID from Session

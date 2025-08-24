@@ -1,6 +1,5 @@
 <?php
 	ob_start();
-	session_start();
 	$pageTitle = 'Profile';
 	include 'init.php';
 	if (isset($_SESSION['user'])) {

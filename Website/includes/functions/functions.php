@@ -5,7 +5,7 @@
 	** Function To Get All Records From Any Database Table
 	*/
 
-	function getAllFrom($field, $table, $where = NULL, $and = NULL, $orderfield, $ordering = "DESC") {
+	function getAllFrom($field, $table, $where = NULL, $and = NULL, $orderfield= NULL, $ordering = "DESC") {
 
 		global $con;
 

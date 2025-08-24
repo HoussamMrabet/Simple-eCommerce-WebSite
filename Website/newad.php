@@ -1,6 +1,5 @@
 <?php
 	ob_start();
-	session_start();
 	$pageTitle = 'Create New Item';
 	include 'init.php';
 	if (isset($_SESSION['user'])) {
